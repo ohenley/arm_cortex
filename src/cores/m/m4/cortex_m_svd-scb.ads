@@ -4,11 +4,13 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 package Cortex_M_SVD.SCB is
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    ---------------
    -- Registers --
@@ -249,11 +251,11 @@ package Cortex_M_SVD.SCB is
    --  require modification.
    type ACTLR_Register is record
       --  unspecified
-      Reserved_0_1      : HAL.UInt2 := 16#0#;
+      Reserved_0_1      : BT.UInt2 := 16#0#;
       --  Disables Interruption Folding
       DISFOLD           : ACTLR_DISFOLD_Field := Cortex_M_SVD.SCB.Normal;
       --  unspecified
-      Reserved_3_9      : HAL.UInt7 := 16#0#;
+      Reserved_3_9      : BT.UInt7 := 16#0#;
       --  Disabled FPU exception outputs
       PFEXCODIS         : ACTLR_PFEXCODIS_Field := Cortex_M_SVD.SCB.Normal;
       --  Disables dynamic read allocate mode for Write-Back Write-Allocate
@@ -296,7 +298,7 @@ package Cortex_M_SVD.SCB is
       --  Disables dybnamic allocation of ADD ans SUB instructions:
       DISDYNADD         : ACTLR_DISDYNADD_Field := Cortex_M_SVD.SCB.Normal;
       --  unspecified
-      Reserved_27_31    : HAL.UInt5 := 16#0#;
+      Reserved_27_31    : BT.UInt5 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -349,7 +351,7 @@ package Cortex_M_SVD.SCB is
    for CPUID_PartNo_Field use
      (Cortex_M7 => 3111);
 
-   subtype CPUID_Constant_Field is HAL.UInt4;
+   subtype CPUID_Constant_Field is BT.UInt4;
 
    --  Variant number, the r value in the rnpn product revision identifier.
    type CPUID_Variant_Field is
@@ -398,7 +400,7 @@ package Cortex_M_SVD.SCB is
       Implementer at 0 range 24 .. 31;
    end record;
 
-   subtype ICSR_VECTACTIVE_Field is HAL.UInt9;
+   subtype ICSR_VECTACTIVE_Field is BT.UInt9;
 
    --  Indicates whether there are preempted active exceptions.
    type ICSR_RETTOBASE_Field is
@@ -413,7 +415,7 @@ package Cortex_M_SVD.SCB is
      (Preempted => 0,
       No_Preempted => 1);
 
-   subtype ICSR_VECTPENDING_Field is HAL.UInt9;
+   subtype ICSR_VECTPENDING_Field is BT.UInt9;
 
    --  Interrupt Control and State Register
    type ICSR_Register is record
@@ -423,18 +425,18 @@ package Cortex_M_SVD.SCB is
       --  Priority Registers.
       VECTACTIVE     : ICSR_VECTACTIVE_Field := 16#0#;
       --  unspecified
-      Reserved_9_10  : HAL.UInt2 := 16#0#;
+      Reserved_9_10  : BT.UInt2 := 16#0#;
       --  Read-only. Indicates whether there are preempted active exceptions.
       RETTOBASE      : ICSR_RETTOBASE_Field := Cortex_M_SVD.SCB.Preempted;
       --  Read-only. Indicates the exception number of the highest priority
       --  pending enabled exception.
       VECTPENDING    : ICSR_VECTPENDING_Field := 16#0#;
       --  unspecified
-      Reserved_21_21 : HAL.Bit := 16#0#;
+      Reserved_21_21 : BT.Bit := 16#0#;
       --  Interrupt pending flag, excluding NMI and Faults
       ISRPENDING     : Boolean := False;
       --  unspecified
-      Reserved_23_24 : HAL.UInt2 := 16#0#;
+      Reserved_23_24 : BT.UInt2 := 16#0#;
       --  Write-only. SysTick exception clear-pending bit.
       PENDSTCLR      : Boolean := False;
       --  SysTick exception set-pending bit.
@@ -444,7 +446,7 @@ package Cortex_M_SVD.SCB is
       --  PendSV set-pending bit.
       PENDSVSET      : Boolean := False;
       --  unspecified
-      Reserved_29_30 : HAL.UInt2 := 16#0#;
+      Reserved_29_30 : BT.UInt2 := 16#0#;
       --  NMI set-pending bit.
       NMIPENDSET     : Boolean := False;
    end record
@@ -526,17 +528,17 @@ package Cortex_M_SVD.SCB is
    --  Application Interrupt and Reset Control Register
    type AIRCR_Register is record
       --  unspecified
-      Reserved_0_1   : HAL.UInt2 := 16#0#;
+      Reserved_0_1   : BT.UInt2 := 16#0#;
       --  Write-only. System reset request bit setting is implementation
       --  defined.
       SYSRESETREQ    : Boolean := False;
       --  unspecified
-      Reserved_3_7   : HAL.UInt5 := 16#0#;
+      Reserved_3_7   : BT.UInt5 := 16#0#;
       --  Interrupt priority grouping field. This field determines the split of
       --  group priority from subpriority.
       PRIGROUP       : AIRCR_PRIGROUP_Field := Cortex_M_SVD.SCB.Bxxxxxxx_Y;
       --  unspecified
-      Reserved_11_14 : HAL.UInt4 := 16#0#;
+      Reserved_11_14 : BT.UInt4 := 16#0#;
       --  Read-only. Data endianness bit setting is implementation defined.
       ENDIANNESS     : AIRCR_ENDIANNESS_Field :=
                         Cortex_M_SVD.SCB.Little_Endian;
@@ -560,7 +562,7 @@ package Cortex_M_SVD.SCB is
    --  System Control Register
    type SCR_Register is record
       --  unspecified
-      Reserved_0_0  : HAL.Bit := 16#0#;
+      Reserved_0_0  : BT.Bit := 16#0#;
       --  Indicates sleep-on-exit when returning from Handler mode to Thread
       --  mode
       SLEEPONEXIT   : Boolean := False;
@@ -568,11 +570,11 @@ package Cortex_M_SVD.SCB is
       --  low-power mode
       SLEEPDEEP     : Boolean := False;
       --  unspecified
-      Reserved_3_3  : HAL.Bit := 16#0#;
+      Reserved_3_3  : BT.Bit := 16#0#;
       --  Send event on pending bit
       SEVONPEND     : Boolean := False;
       --  unspecified
-      Reserved_5_31 : HAL.UInt27 := 16#0#;
+      Reserved_5_31 : BT.UInt27 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -607,14 +609,14 @@ package Cortex_M_SVD.SCB is
       --  Enables unprivileged software access to the STIR
       USERSETMPEND     : Boolean := False;
       --  unspecified
-      Reserved_2_2     : HAL.Bit := 16#0#;
+      Reserved_2_2     : BT.Bit := 16#0#;
       --  Enables unalign access traps.
       UNALIGNED_TRP    : Boolean := False;
       --  Enables faulting or halting when the processor executes an SDIF or
       --  UDIV instruction with a divisor of 0.
       DIV0_TRP         : Boolean := False;
       --  unspecified
-      Reserved_5_7     : HAL.UInt3 := 16#0#;
+      Reserved_5_7     : BT.UInt3 := 16#0#;
       --  Enables handlers with priority -1 or -2 to ignore data BusFaults
       --  caused by load and store instructions. This applies to the hard
       --  fault, NMI, and FAULTMASK escalated handlers.
@@ -623,13 +625,13 @@ package Cortex_M_SVD.SCB is
       --  exception entry is 8-byte aligned.
       STKALIGN         : Boolean := True;
       --  unspecified
-      Reserved_10_15   : HAL.UInt6 := 16#0#;
+      Reserved_10_15   : BT.UInt6 := 16#0#;
       --  Enables L1 data cache.
       DC               : Boolean := False;
       --  Enables L1 instruction cache.
       IC               : Boolean := False;
       --  unspecified
-      Reserved_18_31   : HAL.UInt14 := 16#0#;
+      Reserved_18_31   : BT.UInt14 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -649,9 +651,9 @@ package Cortex_M_SVD.SCB is
       Reserved_18_31   at 0 range 18 .. 31;
    end record;
 
-   subtype SHPR1_PRI_4_Field is HAL.UInt8;
-   subtype SHPR1_PRI_5_Field is HAL.UInt8;
-   subtype SHPR1_PRI_6_Field is HAL.UInt8;
+   subtype SHPR1_PRI_4_Field is BT.UInt8;
+   subtype SHPR1_PRI_5_Field is BT.UInt8;
+   subtype SHPR1_PRI_6_Field is BT.UInt8;
 
    --  System Handler Priority Register 1
    type SHPR1_Register is record
@@ -662,7 +664,7 @@ package Cortex_M_SVD.SCB is
       --  Priority of the system handler, UsageFault
       PRI_6          : SHPR1_PRI_6_Field := 16#0#;
       --  unspecified
-      Reserved_24_31 : HAL.UInt8 := 16#0#;
+      Reserved_24_31 : BT.UInt8 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -674,12 +676,12 @@ package Cortex_M_SVD.SCB is
       Reserved_24_31 at 0 range 24 .. 31;
    end record;
 
-   subtype SHPR2_PRI_11_Field is HAL.UInt8;
+   subtype SHPR2_PRI_11_Field is BT.UInt8;
 
    --  System Handler Priority Register 2
    type SHPR2_Register is record
       --  unspecified
-      Reserved_0_23 : HAL.UInt24 := 16#0#;
+      Reserved_0_23 : BT.UInt24 := 16#0#;
       --  Priority of the system handler, SVCall
       PRI_11        : SHPR2_PRI_11_Field := 16#0#;
    end record
@@ -691,13 +693,13 @@ package Cortex_M_SVD.SCB is
       PRI_11        at 0 range 24 .. 31;
    end record;
 
-   subtype SHPR3_PRI_14_Field is HAL.UInt8;
-   subtype SHPR3_PRI_15_Field is HAL.UInt8;
+   subtype SHPR3_PRI_14_Field is BT.UInt8;
+   subtype SHPR3_PRI_15_Field is BT.UInt8;
 
    --  System Handler Priority Register 3
    type SHPR3_Register is record
       --  unspecified
-      Reserved_0_15 : HAL.UInt16 := 16#0#;
+      Reserved_0_15 : BT.UInt16 := 16#0#;
       --  Priority of the system handler, PendSV
       PRI_14        : SHPR3_PRI_14_Field := 16#0#;
       --  Priority of the system handler, SysTick
@@ -721,19 +723,19 @@ package Cortex_M_SVD.SCB is
       --  active.
       BUSFAULTACT    : Boolean := False;
       --  unspecified
-      Reserved_2_2   : HAL.Bit := 16#0#;
+      Reserved_2_2   : BT.Bit := 16#0#;
       --  Read-only. UsageFault exception active bit, reads as 1 if exception
       --  is active.
       USGFAULTACT    : Boolean := False;
       --  unspecified
-      Reserved_4_6   : HAL.UInt3 := 16#0#;
+      Reserved_4_6   : BT.UInt3 := 16#0#;
       --  Read-only. SVCall active bit, reads as 1 if exception is active.
       SVCALLACT      : Boolean := False;
       --  Read-only. Debug Monitor active bit, reads as 1 if exception is
       --  active.
       MONITORACT     : Boolean := False;
       --  unspecified
-      Reserved_9_9   : HAL.Bit := 16#0#;
+      Reserved_9_9   : BT.Bit := 16#0#;
       --  Read-only. PendSV exception active bit, reads as 1 if exception is
       --  active.
       PENDSVACT      : Boolean := False;
@@ -758,7 +760,7 @@ package Cortex_M_SVD.SCB is
       --  UsageFault enable bit, set to 1 to enable
       USGFAULTENA    : Boolean := False;
       --  unspecified
-      Reserved_19_31 : HAL.UInt13 := 16#0#;
+      Reserved_19_31 : BT.UInt13 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -791,7 +793,7 @@ package Cortex_M_SVD.SCB is
       --  Data access violation flag
       DACCVIOL     : Boolean := False;
       --  unspecified
-      Reserved_2_2 : HAL.Bit := 16#0#;
+      Reserved_2_2 : BT.Bit := 16#0#;
       --  MemManage fault on unstacking for a return from exception
       MUNSTKERR    : Boolean := False;
       --  MemManage fault on stacking for exception entry
@@ -799,7 +801,7 @@ package Cortex_M_SVD.SCB is
       --  MemManage fault during floating-point lazy state preservation.
       MLSPERR      : Boolean := False;
       --  unspecified
-      Reserved_6_6 : HAL.Bit := 16#0#;
+      Reserved_6_6 : BT.Bit := 16#0#;
       --  MemManage fault address register valid flag.
       MMARVALID    : Boolean := False;
    end record
@@ -831,7 +833,7 @@ package Cortex_M_SVD.SCB is
       --  BusFault on floating-point lazy state preservation.
       LSPERR       : Boolean := False;
       --  unspecified
-      Reserved_6_6 : HAL.Bit := 16#0#;
+      Reserved_6_6 : BT.Bit := 16#0#;
       --  BusFault Address Register valid flag.
       BFARVALID    : Boolean := False;
    end record
@@ -860,13 +862,13 @@ package Cortex_M_SVD.SCB is
       --  No coprocessor UsageFault
       NOCP           : Boolean := False;
       --  unspecified
-      Reserved_4_7   : HAL.UInt4 := 16#0#;
+      Reserved_4_7   : BT.UInt4 := 16#0#;
       --  Unaligned access UsageFault
       UNALIGNED      : Boolean := False;
       --  Divide by zero UsageFault.
       DIVBYZERO      : Boolean := False;
       --  unspecified
-      Reserved_10_15 : HAL.UInt6 := 16#0#;
+      Reserved_10_15 : BT.UInt6 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 16,
           Bit_Order => System.Low_Order_First;
@@ -885,12 +887,12 @@ package Cortex_M_SVD.SCB is
    --  HardFault Status Register
    type HFSR_Register is record
       --  unspecified
-      Reserved_0_0  : HAL.Bit := 16#0#;
+      Reserved_0_0  : BT.Bit := 16#0#;
       --  Indicates a BusFault on a vector table read during exception
       --  processing.
       VECTTBL       : Boolean := False;
       --  unspecified
-      Reserved_2_29 : HAL.UInt28 := 16#0#;
+      Reserved_2_29 : BT.UInt28 := 16#0#;
       --  Indicates a forced hard fault, generated by escalation of a fault
       --  with configurable priority that cannot be handled, either because of
       --  priority or because it is disabled.
@@ -928,7 +930,7 @@ package Cortex_M_SVD.SCB is
       --  Interrupt Control and State Register
       ICSR  : aliased ICSR_Register;
       --  Vector Table Offset Register
-      VTOR  : aliased HAL.UInt32;
+      VTOR  : aliased BT.UInt32;
       --  Application Interrupt and Reset Control Register
       AIRCR : aliased AIRCR_Register;
       --  System Control Register
@@ -952,9 +954,9 @@ package Cortex_M_SVD.SCB is
       --  HardFault Status Register
       HFSR  : aliased HFSR_Register;
       --  MemManage Fault Address Register
-      MMAR  : aliased HAL.UInt32;
+      MMAR  : aliased BT.UInt32;
       --  BusFault Address Register
-      BFAR  : aliased HAL.UInt32;
+      BFAR  : aliased BT.UInt32;
    end record
      with Volatile;
 

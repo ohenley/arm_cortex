@@ -4,12 +4,14 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Floating Point Unit
 package Cortex_M_SVD.FPU is
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    ---------------
    -- Registers --
@@ -42,7 +44,7 @@ package Cortex_M_SVD.FPU is
       case As_Array is
          when False =>
             --  CP as a value
-            Val : HAL.UInt4;
+            Val : BT.UInt4;
          when True =>
             --  CP as an array
             Arr : CPACR_CP_Field_Array;
@@ -58,11 +60,11 @@ package Cortex_M_SVD.FPU is
    --  Coprocessor Access Control Register
    type CPACR_Register is record
       --  unspecified
-      Reserved_0_19  : HAL.UInt20 := 16#0#;
+      Reserved_0_19  : BT.UInt20 := 16#0#;
       --  Access privileges for coprocessor 10.
       CP             : CPACR_CP_Field := (As_Array => False, Val => 16#0#);
       --  unspecified
-      Reserved_24_31 : HAL.UInt8 := 16#0#;
+      Reserved_24_31 : BT.UInt8 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -81,7 +83,7 @@ package Cortex_M_SVD.FPU is
       --  stack frame was allocated.
       USER          : Boolean := False;
       --  unspecified
-      Reserved_2_2  : HAL.Bit := 16#0#;
+      Reserved_2_2  : BT.Bit := 16#0#;
       --  Read-only. If set, the mode was Thread Mode when the floating-point
       --  stack frame was allocated.
       THREAD        : Boolean := False;
@@ -98,13 +100,13 @@ package Cortex_M_SVD.FPU is
       --  stack frame was allocated.
       BFRDY         : Boolean := False;
       --  unspecified
-      Reserved_7_7  : HAL.Bit := 16#0#;
+      Reserved_7_7  : BT.Bit := 16#0#;
       --  Read-only. If set, DebugMonitor is enabled and priority permitted
       --  setting the DebugMonitor handler to the pending state when the
       --  floating-point stack frame was allocated.
       MONRDY        : Boolean := False;
       --  unspecified
-      Reserved_9_29 : HAL.UInt21 := 16#0#;
+      Reserved_9_29 : BT.UInt21 := 16#0#;
       --  Enables automatic lazy state preservation for floating-point context.
       LSPEN         : Boolean := True;
       --  Enables CONTROL.FPCA setting on execution of a floating point
@@ -131,12 +133,12 @@ package Cortex_M_SVD.FPU is
       ASPEN         at 0 range 31 .. 31;
    end record;
 
-   subtype FPCAR_ADDRESS_Field is HAL.UInt29;
+   subtype FPCAR_ADDRESS_Field is BT.UInt29;
 
    --  Floating-Point Context Address Register
    type FPCAR_Register is record
       --  unspecified
-      Reserved_0_2 : HAL.UInt3 := 16#0#;
+      Reserved_0_2 : BT.UInt3 := 16#0#;
       --  The FPCAR register holds the location of the unpopulated
       --  floating-point register space allocated on an exception stack frame.
       ADDRESS      : FPCAR_ADDRESS_Field := 16#0#;
@@ -149,12 +151,12 @@ package Cortex_M_SVD.FPU is
       ADDRESS      at 0 range 3 .. 31;
    end record;
 
-   subtype FPDSCR_RMode_Field is HAL.UInt2;
+   subtype FPDSCR_RMode_Field is BT.UInt2;
 
    --  Floating-Point Default Status Control Register
    type FPDSCR_Register is record
       --  unspecified
-      Reserved_0_21  : HAL.UInt22 := 16#0#;
+      Reserved_0_21  : BT.UInt22 := 16#0#;
       --  Default value for FPSCR.RMode.
       RMode          : FPDSCR_RMode_Field := 16#0#;
       --  Default value for FPSCR.FZ.
@@ -164,7 +166,7 @@ package Cortex_M_SVD.FPU is
       --  Default value for FPSCR.AHP.
       AHP            : Boolean := False;
       --  unspecified
-      Reserved_27_31 : HAL.UInt5 := 16#0#;
+      Reserved_27_31 : BT.UInt5 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;

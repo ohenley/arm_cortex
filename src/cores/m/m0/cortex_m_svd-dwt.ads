@@ -4,19 +4,21 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Data Watchpoint Trace
 package Cortex_M_SVD.DWT is
    pragma Preelaborate;
 
+   package BT renames Beta_Types;
+
    ---------------
    -- Registers --
    ---------------
 
-   subtype CTRL_Reserved_0_27_Field is HAL.UInt28;
-   subtype CTRL_NUMCOMP_Field is HAL.UInt4;
+   subtype CTRL_Reserved_0_27_Field is BT.UInt28;
+   subtype CTRL_NUMCOMP_Field is BT.UInt4;
 
    --  Control Register
    type CTRL_Register is record
@@ -42,13 +44,13 @@ package Cortex_M_SVD.DWT is
       --  Control Register
       CTRL      : aliased CTRL_Register;
       --  Program Counter Sample Register
-      PCSR      : aliased HAL.UInt32;
+      PCSR      : aliased BT.UInt32;
       --  Comparator Register 0
-      COMP0     : aliased HAL.UInt32;
+      COMP0     : aliased BT.UInt32;
       --  Mask Register 0
-      MASK0     : aliased HAL.UInt32;
+      MASK0     : aliased BT.UInt32;
       --  Function Register 0
-      FUNCTION0 : aliased HAL.UInt32;
+      FUNCTION0 : aliased BT.UInt32;
    end record
      with Volatile;
 

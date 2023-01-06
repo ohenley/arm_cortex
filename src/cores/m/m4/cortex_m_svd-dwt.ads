@@ -4,22 +4,24 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Data Watchpoint Trace
 package Cortex_M_SVD.DWT is
    pragma Preelaborate;
 
+   package BT renames Beta_Types;
+
    ---------------
    -- Registers --
    ---------------
 
-   subtype CTRL_POSTPRESET_Field is HAL.UInt4;
-   subtype CTRL_POSTINIT_Field is HAL.UInt4;
-   subtype CTRL_SYNCTAP_Field is HAL.UInt2;
-   subtype CTRL_Reserved_13_15_Field is HAL.UInt3;
-   subtype CTRL_NUMCOMP_Field is HAL.UInt4;
+   subtype CTRL_POSTPRESET_Field is BT.UInt4;
+   subtype CTRL_POSTINIT_Field is BT.UInt4;
+   subtype CTRL_SYNCTAP_Field is BT.UInt2;
+   subtype CTRL_Reserved_13_15_Field is BT.UInt3;
+   subtype CTRL_NUMCOMP_Field is BT.UInt4;
 
    --  Control Register
    type CTRL_Register is record
@@ -99,49 +101,49 @@ package Cortex_M_SVD.DWT is
       --  Control Register
       CTRL      : aliased CTRL_Register;
       --  Cycle Count Register
-      CYCCNT    : aliased HAL.UInt32;
+      CYCCNT    : aliased BT.UInt32;
       --  CPI Count Register
-      CPICNT    : aliased HAL.UInt32;
+      CPICNT    : aliased BT.UInt32;
       --  Exception Overhead Count Register
-      EXCCNT    : aliased HAL.UInt32;
+      EXCCNT    : aliased BT.UInt32;
       --  Sleep Count Register
-      SLEEPCNT  : aliased HAL.UInt32;
+      SLEEPCNT  : aliased BT.UInt32;
       --  LSU Count Register
-      LSUCNT    : aliased HAL.UInt32;
+      LSUCNT    : aliased BT.UInt32;
       --  Folded-instruction Count Register
-      FOLDCNT   : aliased HAL.UInt32;
+      FOLDCNT   : aliased BT.UInt32;
       --  Program Counter Sample Register
-      PCSR      : aliased HAL.UInt32;
+      PCSR      : aliased BT.UInt32;
       --  Comparator Register 0
-      COMP0     : aliased HAL.UInt32;
+      COMP0     : aliased BT.UInt32;
       --  Mask Register 0
-      MASK0     : aliased HAL.UInt32;
+      MASK0     : aliased BT.UInt32;
       --  Function Register 0
-      FUNCTION0 : aliased HAL.UInt32;
+      FUNCTION0 : aliased BT.UInt32;
       --  Reserved 0
-      RESERVED0 : aliased HAL.UInt32;
+      RESERVED0 : aliased BT.UInt32;
       --  Comparator Register 1
-      COMP1     : aliased HAL.UInt32;
+      COMP1     : aliased BT.UInt32;
       --  Mask Register 1
-      MASK1     : aliased HAL.UInt32;
+      MASK1     : aliased BT.UInt32;
       --  Function Register 1
-      FUNCTION1 : aliased HAL.UInt32;
+      FUNCTION1 : aliased BT.UInt32;
       --  Reserved 1
-      RESERVED1 : aliased HAL.UInt32;
+      RESERVED1 : aliased BT.UInt32;
       --  Comparator Register 2
-      COMP2     : aliased HAL.UInt32;
+      COMP2     : aliased BT.UInt32;
       --  Mask Register 2
-      MASK2     : aliased HAL.UInt32;
+      MASK2     : aliased BT.UInt32;
       --  Function Register 2
-      FUNCTION2 : aliased HAL.UInt32;
+      FUNCTION2 : aliased BT.UInt32;
       --  Reserved 2
-      RESERVED2 : aliased HAL.UInt32;
+      RESERVED2 : aliased BT.UInt32;
       --  Comparator Register 3
-      COMP3     : aliased HAL.UInt32;
+      COMP3     : aliased BT.UInt32;
       --  Mask Register 3
-      MASK3     : aliased HAL.UInt32;
+      MASK3     : aliased BT.UInt32;
       --  Function Register 3
-      FUNCTION3 : aliased HAL.UInt32;
+      FUNCTION3 : aliased BT.UInt32;
    end record
      with Volatile;
 

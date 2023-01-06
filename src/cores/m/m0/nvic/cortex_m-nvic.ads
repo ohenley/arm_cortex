@@ -18,7 +18,7 @@
 --   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS    --
 --   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT      --
 --   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  --
---   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT   --
+--   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SBTL THE COPYRIGHT   --
 --   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, --
 --   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT       --
 --   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,  --
@@ -30,11 +30,11 @@
 --                                                                          --
 --  This file is based on:                                                  --
 --                                                                          --
---   @file    stm32f4xx_hal_cortex.h                                        --
+--   @file    stm32f4xx_BT_cortex.h                                        --
 --   @author  MCD Application Team                                          --
 --   @version V1.1.0                                                        --
 --   @date    19-June-2014                                                  --
---   @brief   Header file of CORTEX HAL module.                             --
+--   @brief   Header file of CORTEX BT module.                             --
 --                                                                          --
 --   COPYRIGHT(c) 2014 STMicroelectronics                                   --
 ------------------------------------------------------------------------------
@@ -42,16 +42,19 @@
 --  This file provides Nested Vector interrupt Controller definitions for the
 --  ARM Cortex M0 microcontrollers from ST Microelectronics.
 
-with HAL;                  use HAL;
+with Beta_Types;
 
 package Cortex_M.NVIC is  -- the Nested Vectored Interrupt Controller
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
+   use BT;
 
    NVIC_PRIO_BITS : constant := 2;
    --  All Cortex M0 parts have 2 bit priority mask
 
    type Interrupt_ID is new Natural range 0 .. 31;
-   type Interrupt_Priority is new UInt8 range 0 .. (2**NVIC_PRIO_BITS - 1);
+   type Interrupt_Priority is new BT.UInt8 range 0 .. (2**NVIC_PRIO_BITS - 1);
 
    procedure Set_Priority
      (IRQn     : Interrupt_ID;

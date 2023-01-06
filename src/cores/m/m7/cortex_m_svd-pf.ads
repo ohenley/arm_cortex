@@ -4,12 +4,14 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Processor Features
 package Cortex_M_SVD.PF is
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    ---------------
    -- Registers --
@@ -48,13 +50,13 @@ package Cortex_M_SVD.PF is
       --  Read-only. Unified Cache is implemented at L1
       UCL1           : Boolean;
       --  unspecified
-      Reserved_3_23  : HAL.UInt21;
+      Reserved_3_23  : BT.UInt21;
       --  Read-only. Level of Coherency
       LoC            : CLIDR_LoC_Field;
       --  Read-only. Level of Unification
       LoU            : CLIDR_LoU_Field;
       --  unspecified
-      Reserved_30_31 : HAL.UInt2;
+      Reserved_30_31 : BT.UInt2;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -87,7 +89,7 @@ package Cortex_M_SVD.PF is
    for CTR_DMinLine_Field use
      (Line_8_Words => 3);
 
-   subtype CTR_ERG_Field is HAL.UInt4;
+   subtype CTR_ERG_Field is BT.UInt4;
 
    --  Cache Writable Granule.
    type CTR_CWG_Field is
@@ -112,7 +114,7 @@ package Cortex_M_SVD.PF is
       --  Read-only. Smallest cache line of all the instruction caches.
       IMinLine       : CTR_IMinLine_Field;
       --  unspecified
-      Reserved_4_15  : HAL.UInt12;
+      Reserved_4_15  : BT.UInt12;
       --  Read-only. Smallest cache line of all the data caches.
       DMinLine       : CTR_DMinLine_Field;
       --  Read-only. Exclusive Reservation Granule. The local monitor within
@@ -124,7 +126,7 @@ package Cortex_M_SVD.PF is
       --  Read-only. Cache Writable Granule.
       CWG            : CTR_CWG_Field;
       --  unspecified
-      Reserved_28_28 : HAL.Bit;
+      Reserved_28_28 : BT.Bit;
       --  Read-only. Cache Writable Granule.
       Format         : CTR_Format_Field;
    end record
@@ -141,9 +143,9 @@ package Cortex_M_SVD.PF is
       Format         at 0 range 29 .. 31;
    end record;
 
-   subtype CCSIDR_LineSize_Field is HAL.UInt3;
-   subtype CCSIDR_Associativity_Field is HAL.UInt10;
-   subtype CCSIDR_NumSets_Field is HAL.UInt15;
+   subtype CCSIDR_LineSize_Field is BT.UInt3;
+   subtype CCSIDR_Associativity_Field is BT.UInt10;
+   subtype CCSIDR_NumSets_Field is BT.UInt15;
 
    --  Cache Size ID Register
    type CCSIDR_Register is record
@@ -204,7 +206,7 @@ package Cortex_M_SVD.PF is
       --  Identifies the cache level selected.
       Level         : CSSELR_Level_Field := Cortex_M_SVD.PF.Level_1;
       --  unspecified
-      Reserved_4_31 : HAL.UInt28 := 16#0#;
+      Reserved_4_31 : BT.UInt28 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;

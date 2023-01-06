@@ -34,7 +34,7 @@ with System.Machine_Code;      use System.Machine_Code;
 with Ada.Unchecked_Conversion;
 
 with Interfaces;               use Interfaces;
-with HAL;                      use HAL;
+with Beta_Types;               use Beta_Types;
 
 with Cortex_M_SVD.SCB;         use Cortex_M_SVD.SCB;
 with Cortex_M_SVD.PF;          use Cortex_M_SVD.PF;

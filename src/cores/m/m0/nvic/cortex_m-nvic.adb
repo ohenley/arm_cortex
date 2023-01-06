@@ -18,7 +18,7 @@
 --   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS    --
 --   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT      --
 --   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  --
---   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT   --
+--   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SBTL THE COPYRIGHT   --
 --   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, --
 --   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT       --
 --   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,  --
@@ -30,11 +30,11 @@
 --                                                                          --
 --  This file is based on:                                                  --
 --                                                                          --
---   @file    stm32f4xx_hal_cortex.c                                        --
+--   @file    stm32f4xx_BT_cortex.c                                        --
 --   @author  MCD Application Team                                          --
 --   @version V1.1.0                                                        --
 --   @date    19-June-2014                                                  --
---   @brief   CORTEX HAL module driver.                                     --
+--   @brief   CORTEX BT module driver.                                     --
 --                                                                          --
 --   COPYRIGHT(c) 2014 STMicroelectronics                                   --
 ------------------------------------------------------------------------------
@@ -51,20 +51,21 @@ package body Cortex_M.NVIC is
      (IRQn     : Interrupt_ID;
       Priority : Interrupt_Priority)
    is
+      use BT;
       type As_Array (As_Arr : Boolean := True) is record
          case As_Arr is
             when True =>
-               Arr : UInt8_Array (0 .. 3);
+               Arr : BT.UInt8_Array (0 .. 3);
             when False =>
-               IPR : UInt32;
+               IPR : BT.UInt32;
          end case;
       end record with Unchecked_Union, Pack, Size => 32;
 
       IPR_Index : constant Natural := Natural (IRQn) / 4;
       IP_Index  : constant Natural := Natural (IRQn) mod 4;
       IPR       : As_Array;
-      Value     : constant UInt8 :=
-        Shift_Left (UInt8 (Priority), 8 - NVIC_PRIO_BITS) and 16#FF#;
+      Value     : constant BT.UInt8 :=
+        BT.Shift_Left (BT.UInt8 (Priority), 8 - NVIC_PRIO_BITS) and 16#FF#;
    begin
 
       IPR.IPR := NVIC_Periph.NVIC_IPR (IPR_Index);
@@ -80,7 +81,7 @@ package body Cortex_M.NVIC is
 
    procedure Enable_Interrupt (IRQn : Interrupt_ID) is
    begin
-      NVIC_Periph.NVIC_ISER := Shift_Left (1, Natural (IRQn));
+      NVIC_Periph.NVIC_ISER := BT.Shift_Left (1, Natural (IRQn));
    end Enable_Interrupt;
 
    -------------
@@ -89,7 +90,7 @@ package body Cortex_M.NVIC is
 
    procedure Disable_Interrupt (IRQn : Interrupt_ID) is
    begin
-      NVIC_Periph.NVIC_ICER := Shift_Left (1, Natural (IRQn));
+      NVIC_Periph.NVIC_ICER := BT.Shift_Left (1, Natural (IRQn));
    end Disable_Interrupt;
 
    -------------
@@ -97,8 +98,10 @@ package body Cortex_M.NVIC is
    -------------
 
    function Enabled (IRQn : Interrupt_ID) return Boolean is
+      use BT;
    begin
-      return ((NVIC_Periph.NVIC_ISER and Shift_Left (1, Natural (IRQn))) /= 0);
+      return ((NVIC_Periph.NVIC_ISER and
+              BT.Shift_Left (1, Natural (IRQn))) /= 0);
    end Enabled;
 
    -------------
@@ -106,8 +109,10 @@ package body Cortex_M.NVIC is
    -------------
 
    function Pending (IRQn : Interrupt_ID) return Boolean is
+      use BT;
    begin
-      return ((NVIC_Periph.NVIC_ISPR and Shift_Left (1, Natural (IRQn))) /= 0);
+      return ((NVIC_Periph.NVIC_ISPR and
+              BT.Shift_Left (1, Natural (IRQn))) /= 0);
    end Pending;
 
    -----------------
@@ -116,7 +121,7 @@ package body Cortex_M.NVIC is
 
    procedure Set_Pending (IRQn : Interrupt_ID) is
    begin
-      NVIC_Periph.NVIC_ISPR := Shift_Left (1, Natural (IRQn));
+      NVIC_Periph.NVIC_ISPR := BT.Shift_Left (1, Natural (IRQn));
    end Set_Pending;
 
    -------------------
@@ -125,7 +130,7 @@ package body Cortex_M.NVIC is
 
    procedure Clear_Pending (IRQn : Interrupt_ID) is
    begin
-      NVIC_Periph.NVIC_ICPR := Shift_Left (1, Natural (IRQn));
+      NVIC_Periph.NVIC_ICPR := BT.Shift_Left (1, Natural (IRQn));
    end Clear_Pending;
 
 end Cortex_M.NVIC;

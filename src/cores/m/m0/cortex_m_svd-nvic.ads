@@ -4,10 +4,13 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 
 package Cortex_M_SVD.NVIC is
+   
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    ---------------
    -- Registers --
@@ -16,7 +19,7 @@ package Cortex_M_SVD.NVIC is
    --  Interrupt Priority Register
 
    --  Interrupt Priority Register
-   type NVIC_IPR_Registers is array (0 .. 7) of HAL.UInt32
+   type NVIC_IPR_Registers is array (0 .. 7) of BT.UInt32
      with Volatile;
 
    -----------------
@@ -25,13 +28,13 @@ package Cortex_M_SVD.NVIC is
 
    type NVIC_Peripheral is record
       --  Interrupt Set-Enable Registers
-      NVIC_ISER : aliased HAL.UInt32;
+      NVIC_ISER : aliased BT.UInt32;
       --  Interrupt Clear-Enable Registers
-      NVIC_ICER : aliased HAL.UInt32;
+      NVIC_ICER : aliased BT.UInt32;
       --  Interrupt Set-Pending Registers
-      NVIC_ISPR : aliased HAL.UInt32;
+      NVIC_ISPR : aliased BT.UInt32;
       --  Interrupt Clear-Pending Registers
-      NVIC_ICPR : aliased HAL.UInt32;
+      NVIC_ICPR : aliased BT.UInt32;
       --  Interrupt Priority Register
       NVIC_IPR  : aliased NVIC_IPR_Registers;
    end record

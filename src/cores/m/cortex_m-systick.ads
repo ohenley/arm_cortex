@@ -18,7 +18,7 @@
 --   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS    --
 --   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT      --
 --   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  --
---   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT   --
+--   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SBTL THE COPYRIGHT   --
 --   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, --
 --   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT       --
 --   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,  --
@@ -29,16 +29,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with HAL;
+with Beta_Types;
 
 package Cortex_M.Systick is
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    type Clock_Source is (CPU_Clock, External_Clock);
 
    procedure Configure (Source             : Clock_Source;
                         Generate_Interrupt : Boolean;
-                        Reload_Value       : HAL.UInt24);
+                        Reload_Value       : BT.UInt24);
 
    procedure Enable;
    --  Enable Systick
@@ -49,7 +51,7 @@ package Cortex_M.Systick is
    function Counted_To_Zero return Boolean;
    --  Return the value of the COUNTFLAB bit of the Control and Status Register
 
-   function Counter return HAL.UInt24;
+   function Counter return BT.UInt24;
    --  Return the current value of the counter
 
 end Cortex_M.Systick;

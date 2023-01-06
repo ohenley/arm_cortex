@@ -11,8 +11,10 @@ maintainers = ["wolf biters <the.wolf.biters@gmail.com>"]
 maintainers-logins = ["wolfbiters"]
 
 [[depends-on]]
-basic_types = "1.0.0"
-gnat_arm_elf = ">=12"
+gnat_arm_elf = "^12"
+beta_types = "1.0.0"
+
 
 [configuration.variables]
-core = { type = "Enum", values = ["m0", "m0p", "m4", "m4f", "m7f", "m7df"] }
+core = { type = "Enum", values = ["m0", "m0p", "m4", "m4f", "m7f", "m7df"], default = "m7f" }
+runtime = { type = "Enum", values = ["light_cortex"], default = "light_cortex" }

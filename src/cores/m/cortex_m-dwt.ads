@@ -18,7 +18,7 @@
 --   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS    --
 --   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT      --
 --   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  --
---   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT   --
+--   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SBTL THE COPYRIGHT   --
 --   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, --
 --   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT       --
 --   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,  --
@@ -33,10 +33,12 @@
 --  Trace (DWT) facility defined by ARM for Cortex M processors. As such it
 --  should be vendor-independent.
 
-with HAL;  use HAL;
+with Beta_Types;
 
 package Cortex_M.DWT is  --  Data Watchpoint Trace
    pragma Elaborate_Body;
+
+   package BT renames Beta_Types;
 
    --  The assumption is that application code will access the registers of
    --  the DWT directly, via the SVD-generated package Cortex_M_SVD.DWT,
@@ -50,17 +52,17 @@ package Cortex_M.DWT is  --  Data Watchpoint Trace
    --  as unsigned 32-bit values for convenient comparison using the function
    --  below. The values are just the NUMCOMP nibble and the boolean flags in
    --  the next nibble.
-   No_DWT_Present                            : constant UInt32 := 0;
-   Only_One_Comparator                       : constant UInt32 :=
+   No_DWT_Present                            : constant BT.UInt32 := 0;
+   Only_One_Comparator                       : constant BT.UInt32 :=
       16#1000_0000#; --  268435456 dec
-   One_Comparator_Watchpoints                : constant UInt32 :=
+   One_Comparator_Watchpoints                : constant BT.UInt32 :=
       16#1F00_0000#; --  520093696 dec
-   Four_Comparators_Watchpoints_And_Triggers : constant UInt32 :=
+   Four_Comparators_Watchpoints_And_Triggers : constant BT.UInt32 :=
       16#4000_0000#; -- 1073741824 dec
-   Four_Comparators_Watchpoints_Only         : constant UInt32 :=
+   Four_Comparators_Watchpoints_Only         : constant BT.UInt32 :=
       16#4F00_0000#; -- 1325400064 dec
 
-   function DWT_Reset_Value return UInt32 with Inline;
+   function DWT_Reset_Value return BT.UInt32 with Inline;
    --  Returns the value of the DWT.CTRL register as a word, for convenient
    --  comparison to the constants above.
 

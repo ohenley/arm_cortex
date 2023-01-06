@@ -4,13 +4,15 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Memory Protection Unit
 package Cortex_M_SVD.MPU is
    pragma Preelaborate;
 
+   package BT renames Beta_Types;
+   
    ---------------
    -- Registers --
    ---------------
@@ -25,8 +27,8 @@ package Cortex_M_SVD.MPU is
    for TYPE_SEPARATE_Field use
      (Unified => 0);
 
-   subtype MPU_TYPE_DREGION_Field is HAL.UInt8;
-   subtype MPU_TYPE_IREGION_Field is HAL.UInt8;
+   subtype MPU_TYPE_DREGION_Field is BT.UInt8;
+   subtype MPU_TYPE_IREGION_Field is BT.UInt8;
 
    --  MPU Type Register
    type MPU_TYPE_Register is record
@@ -34,7 +36,7 @@ package Cortex_M_SVD.MPU is
       --  data memory maps.
       SEPARATE_k     : TYPE_SEPARATE_Field;
       --  unspecified
-      Reserved_1_7   : HAL.UInt7;
+      Reserved_1_7   : BT.UInt7;
       --  Read-only. Indicates the number of supported MPU data regions
       --  depending on your implementation.
       DREGION        : MPU_TYPE_DREGION_Field;
@@ -43,7 +45,7 @@ package Cortex_M_SVD.MPU is
       --  by the DREGION field.
       IREGION        : MPU_TYPE_IREGION_Field;
       --  unspecified
-      Reserved_24_31 : HAL.UInt8;
+      Reserved_24_31 : BT.UInt8;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -66,7 +68,7 @@ package Cortex_M_SVD.MPU is
       --  Enables privileged software access to the default memory map.
       PRIVDEFENA    : Boolean := False;
       --  unspecified
-      Reserved_3_31 : HAL.UInt29 := 16#0#;
+      Reserved_3_31 : BT.UInt29 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -78,7 +80,7 @@ package Cortex_M_SVD.MPU is
       Reserved_3_31 at 0 range 3 .. 31;
    end record;
 
-   subtype MPU_RNR_REGION_Field is HAL.UInt8;
+   subtype MPU_RNR_REGION_Field is BT.UInt8;
 
    --  MPU Region Number Register
    type MPU_RNR_Register is record
@@ -86,7 +88,7 @@ package Cortex_M_SVD.MPU is
       --  registers.
       REGION        : MPU_RNR_REGION_Field := 16#0#;
       --  unspecified
-      Reserved_8_31 : HAL.UInt24 := 16#0#;
+      Reserved_8_31 : BT.UInt24 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -96,8 +98,8 @@ package Cortex_M_SVD.MPU is
       Reserved_8_31 at 0 range 8 .. 31;
    end record;
 
-   subtype MPU_RBAR_REGION_Field is HAL.UInt4;
-   subtype MPU_RBAR_ADDR_Field is HAL.UInt27;
+   subtype MPU_RBAR_REGION_Field is BT.UInt4;
+   subtype MPU_RBAR_ADDR_Field is BT.UInt27;
 
    --  MPU Region Base Address Register
    type MPU_RBAR_Register is record
@@ -129,7 +131,7 @@ package Cortex_M_SVD.MPU is
       ADDR   at 0 range 5 .. 31;
    end record;
 
-   subtype MPU_RASR_SIZE_Field is HAL.UInt5;
+   subtype MPU_RASR_SIZE_Field is BT.UInt5;
 
    --  MPU_RASR_SRD array
    type MPU_RASR_SRD_Field_Array is array (0 .. 7) of Boolean
@@ -142,7 +144,7 @@ package Cortex_M_SVD.MPU is
       case As_Array is
          when False =>
             --  SRD as a value
-            Val : HAL.UInt8;
+            Val : BT.UInt8;
          when True =>
             --  SRD as an array
             Arr : MPU_RASR_SRD_Field_Array;
@@ -155,7 +157,7 @@ package Cortex_M_SVD.MPU is
       Arr at 0 range 0 .. 7;
    end record;
 
-   subtype MPU_RASR_TEX_Field is HAL.UInt3;
+   subtype MPU_RASR_TEX_Field is BT.UInt3;
 
    --  Access permission field
    type RASR_AP_Field is
@@ -204,7 +206,7 @@ package Cortex_M_SVD.MPU is
       --  The Region size is defined as (Region size in bytes) = 2^(SIZE+1)
       SIZE           : MPU_RASR_SIZE_Field := 16#0#;
       --  unspecified
-      Reserved_6_7   : HAL.UInt2 := 16#0#;
+      Reserved_6_7   : BT.UInt2 := 16#0#;
       --  Subregion disable bits
       SRD            : MPU_RASR_SRD_Field :=
                         (As_Array => False, Val => 16#0#);
@@ -217,15 +219,15 @@ package Cortex_M_SVD.MPU is
       --  Memory access attribute.
       TEX            : MPU_RASR_TEX_Field := 16#0#;
       --  unspecified
-      Reserved_22_23 : HAL.UInt2 := 16#0#;
+      Reserved_22_23 : BT.UInt2 := 16#0#;
       --  Access permission field
       AP             : RASR_AP_Field := Cortex_M_SVD.MPU.No_Access;
       --  unspecified
-      Reserved_27_27 : HAL.Bit := 16#0#;
+      Reserved_27_27 : BT.Bit := 16#0#;
       --  Instruction access disable bit
       XN             : RASR_XN_Field := Cortex_M_SVD.MPU.I_Enabled;
       --  unspecified
-      Reserved_29_31 : HAL.UInt3 := 16#0#;
+      Reserved_29_31 : BT.UInt3 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -246,8 +248,8 @@ package Cortex_M_SVD.MPU is
       Reserved_29_31 at 0 range 29 .. 31;
    end record;
 
-   subtype RBAR_A_REGION_Field is HAL.UInt4;
-   subtype RBAR_A_ADDR_Field is HAL.UInt27;
+   subtype RBAR_A_REGION_Field is BT.UInt4;
+   subtype RBAR_A_ADDR_Field is BT.UInt27;
 
    --  Uses (MPU_RNR[7:2]<<2) + 1
    type RBAR_A_Register is record
@@ -279,7 +281,7 @@ package Cortex_M_SVD.MPU is
       ADDR   at 0 range 5 .. 31;
    end record;
 
-   subtype RASR_A_SIZE_Field is HAL.UInt5;
+   subtype RASR_A_SIZE_Field is BT.UInt5;
 
    --  RASR_A_SRD array
    type RASR_A_SRD_Field_Array is array (0 .. 7) of Boolean
@@ -292,7 +294,7 @@ package Cortex_M_SVD.MPU is
       case As_Array is
          when False =>
             --  SRD as a value
-            Val : HAL.UInt8;
+            Val : BT.UInt8;
          when True =>
             --  SRD as an array
             Arr : RASR_A_SRD_Field_Array;
@@ -305,7 +307,7 @@ package Cortex_M_SVD.MPU is
       Arr at 0 range 0 .. 7;
    end record;
 
-   subtype RASR_A_TEX_Field is HAL.UInt3;
+   subtype RASR_A_TEX_Field is BT.UInt3;
 
    --  Access permission field
    type RASR_A1_AP_Field is
@@ -354,7 +356,7 @@ package Cortex_M_SVD.MPU is
       --  The Region size is defined as (Region size in bytes) = 2^(SIZE+1)
       SIZE           : RASR_A_SIZE_Field := 16#0#;
       --  unspecified
-      Reserved_6_7   : HAL.UInt2 := 16#0#;
+      Reserved_6_7   : BT.UInt2 := 16#0#;
       --  Subregion disable bits
       SRD            : RASR_A_SRD_Field := (As_Array => False, Val => 16#0#);
       --  Memory access attribute.
@@ -366,15 +368,15 @@ package Cortex_M_SVD.MPU is
       --  Memory access attribute.
       TEX            : RASR_A_TEX_Field := 16#0#;
       --  unspecified
-      Reserved_22_23 : HAL.UInt2 := 16#0#;
+      Reserved_22_23 : BT.UInt2 := 16#0#;
       --  Access permission field
       AP             : RASR_A1_AP_Field := Cortex_M_SVD.MPU.No_Access;
       --  unspecified
-      Reserved_27_27 : HAL.Bit := 16#0#;
+      Reserved_27_27 : BT.Bit := 16#0#;
       --  Instruction access disable bit
       XN             : RASR_A1_XN_Field := Cortex_M_SVD.MPU.I_Enabled;
       --  unspecified
-      Reserved_29_31 : HAL.UInt3 := 16#0#;
+      Reserved_29_31 : BT.UInt3 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;

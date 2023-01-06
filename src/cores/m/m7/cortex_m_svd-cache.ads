@@ -4,30 +4,32 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 --  Cache maintenance operations
 package Cortex_M_SVD.Cache is
    pragma Preelaborate;
 
+   package BT renames Beta_Types;
+
    ---------------
    -- Registers --
    ---------------
 
-   subtype DCISW_Set_Field is HAL.UInt9;
-   subtype DCISW_Way_Field is HAL.UInt2;
+   subtype DCISW_Set_Field is BT.UInt9;
+   subtype DCISW_Way_Field is BT.UInt2;
 
    --  Data cache invalidate by set/way
    type DCISW_Register is record
       --  unspecified
-      Reserved_0_4   : HAL.UInt5 := 16#0#;
+      Reserved_0_4   : BT.UInt5 := 16#0#;
       --  Write-only. Set/index that operation applies to. The number of
       --  indices in a cache depends on the configured cache size. When this is
       --  less than the maximum, use the LSB of this field.
       Set            : DCISW_Set_Field := 16#0#;
       --  unspecified
-      Reserved_14_29 : HAL.UInt16 := 16#0#;
+      Reserved_14_29 : BT.UInt16 := 16#0#;
       --  Write-only. Way that operation applies to. For the data cache, values
       --  0, 1, 2 and 3 are supported..
       Way            : DCISW_Way_Field := 16#0#;
@@ -42,19 +44,19 @@ package Cortex_M_SVD.Cache is
       Way            at 0 range 30 .. 31;
    end record;
 
-   subtype DCCSW_Set_Field is HAL.UInt9;
-   subtype DCCSW_Way_Field is HAL.UInt2;
+   subtype DCCSW_Set_Field is BT.UInt9;
+   subtype DCCSW_Way_Field is BT.UInt2;
 
    --  Data cache clean by set/way
    type DCCSW_Register is record
       --  unspecified
-      Reserved_0_4   : HAL.UInt5 := 16#0#;
+      Reserved_0_4   : BT.UInt5 := 16#0#;
       --  Write-only. Set/index that operation applies to. The number of
       --  indices in a cache depends on the configured cache size. When this is
       --  less than the maximum, use the LSB of this field.
       Set            : DCCSW_Set_Field := 16#0#;
       --  unspecified
-      Reserved_14_29 : HAL.UInt16 := 16#0#;
+      Reserved_14_29 : BT.UInt16 := 16#0#;
       --  Write-only. Way that operation applies to. For the data cache, values
       --  0, 1, 2 and 3 are supported..
       Way            : DCCSW_Way_Field := 16#0#;
@@ -69,19 +71,19 @@ package Cortex_M_SVD.Cache is
       Way            at 0 range 30 .. 31;
    end record;
 
-   subtype DCCISW_Set_Field is HAL.UInt9;
-   subtype DCCISW_Way_Field is HAL.UInt2;
+   subtype DCCISW_Set_Field is BT.UInt9;
+   subtype DCCISW_Way_Field is BT.UInt2;
 
    --  Data cache clean and invalidate by set/way
    type DCCISW_Register is record
       --  unspecified
-      Reserved_0_4   : HAL.UInt5 := 16#0#;
+      Reserved_0_4   : BT.UInt5 := 16#0#;
       --  Write-only. Set/index that operation applies to. The number of
       --  indices in a cache depends on the configured cache size. When this is
       --  less than the maximum, use the LSB of this field.
       Set            : DCCISW_Set_Field := 16#0#;
       --  unspecified
-      Reserved_14_29 : HAL.UInt16 := 16#0#;
+      Reserved_14_29 : BT.UInt16 := 16#0#;
       --  Write-only. Way that operation applies to. For the data cache, values
       --  0, 1, 2 and 3 are supported..
       Way            : DCCISW_Way_Field := 16#0#;
@@ -103,21 +105,21 @@ package Cortex_M_SVD.Cache is
    --  Cache maintenance operations
    type Cache_Peripheral is record
       --  Instruction cache invalidate all to the PoU
-      ICIALLU  : aliased HAL.UInt32;
+      ICIALLU  : aliased BT.UInt32;
       --  Instruction cache invalidate by address to the PoU
-      ICIMVAU  : aliased HAL.UInt32;
+      ICIMVAU  : aliased BT.UInt32;
       --  Data cache invalidate by address to the PoC
-      DCIMVAC  : aliased HAL.UInt32;
+      DCIMVAC  : aliased BT.UInt32;
       --  Data cache invalidate by set/way
       DCISW    : aliased DCISW_Register;
       --  Data cache clean by address to the PoU
-      DCCMVAU  : aliased HAL.UInt32;
+      DCCMVAU  : aliased BT.UInt32;
       --  Data cache clean by address to the PoC
-      DCCMVAC  : aliased HAL.UInt32;
+      DCCMVAC  : aliased BT.UInt32;
       --  Data cache clean by set/way
       DCCSW    : aliased DCCSW_Register;
       --  Data cache clean and invalidate by address to the PoC
-      DCCIMVAC : aliased HAL.UInt32;
+      DCCIMVAC : aliased BT.UInt32;
       --  Data cache clean and invalidate by set/way
       DCCISW   : aliased DCCISW_Register;
    end record

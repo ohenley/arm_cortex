@@ -4,11 +4,13 @@ pragma Restrictions (No_Elaboration_Code);
 pragma Ada_2012;
 pragma Style_Checks (Off);
 
-with HAL;
+with Beta_Types;
 with System;
 
 package Cortex_M_SVD.Debug is
    pragma Preelaborate;
+
+   package BT renames Beta_Types;
 
    ---------------
    -- Registers --
@@ -16,10 +18,10 @@ package Cortex_M_SVD.Debug is
 
    --  Debug Fault Status Register
    type DFSR_Register is record
-      HALTED        : Boolean := False;
+      BTTED        : Boolean := False;
       --  BKPT instruction executed or breakpoint match in FPB.
       BKPT          : Boolean := False;
-      --  Data Watchpoint and Trace trap. Indicates that the core halted due to
+      --  Data Watchpoint and Trace trap. Indicates that the core BTted due to
       --  at least one DWT trap event.
       DWTTRAP       : Boolean := False;
       --  Vector catch triggered. Corresponding FSR will contain the primary
@@ -28,13 +30,13 @@ package Cortex_M_SVD.Debug is
       --  An asynchronous exception generated due to the assertion of EDBGRQ.
       EXTERNAL      : Boolean := False;
       --  unspecified
-      Reserved_5_31 : HAL.UInt27 := 16#0#;
+      Reserved_5_31 : BT.UInt27 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
 
    for DFSR_Register use record
-      HALTED        at 0 range 0 .. 0;
+      BTTED        at 0 range 0 .. 0;
       BKPT          at 0 range 1 .. 1;
       DWTTRAP       at 0 range 2 .. 2;
       VCATCH        at 0 range 3 .. 3;
@@ -50,47 +52,47 @@ package Cortex_M_SVD.Debug is
       --  Read-only.
       C_DEBUGGEN     : Boolean;
       --  Read-only.
-      C_HALT         : Boolean;
+      C_BTT         : Boolean;
       --  Read-only.
       C_STEP         : Boolean;
       --  Read-only.
       C_MASKINTS     : Boolean;
       --  unspecified
-      Reserved_4_4   : HAL.Bit;
+      Reserved_4_4   : BT.Bit;
       --  Read-only.
       C_SNAPSTALL    : Boolean;
       --  unspecified
-      Reserved_6_15  : HAL.UInt10;
+      Reserved_6_15  : BT.UInt10;
       --  Read-only.
       S_REGRDY       : Boolean;
       --  Read-only.
-      S_HALT         : Boolean;
+      S_BTT         : Boolean;
       --  Read-only.
       S_SLEEP        : Boolean;
       --  Read-only.
       S_LOCKUP       : Boolean;
       --  unspecified
-      Reserved_20_23 : HAL.UInt4;
+      Reserved_20_23 : BT.UInt4;
       --  Read-only.
       S_RETIRE_ST    : Boolean;
       --  Read-only.
       S_RESET_ST     : Boolean;
       --  unspecified
-      Reserved_26_31 : HAL.UInt6;
+      Reserved_26_31 : BT.UInt6;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
 
    for Read_DHCSR_Register use record
       C_DEBUGGEN     at 0 range 0 .. 0;
-      C_HALT         at 0 range 1 .. 1;
+      C_BTT         at 0 range 1 .. 1;
       C_STEP         at 0 range 2 .. 2;
       C_MASKINTS     at 0 range 3 .. 3;
       Reserved_4_4   at 0 range 4 .. 4;
       C_SNAPSTALL    at 0 range 5 .. 5;
       Reserved_6_15  at 0 range 6 .. 15;
       S_REGRDY       at 0 range 16 .. 16;
-      S_HALT         at 0 range 17 .. 17;
+      S_BTT         at 0 range 17 .. 17;
       S_SLEEP        at 0 range 18 .. 18;
       S_LOCKUP       at 0 range 19 .. 19;
       Reserved_20_23 at 0 range 20 .. 23;
@@ -99,23 +101,23 @@ package Cortex_M_SVD.Debug is
       Reserved_26_31 at 0 range 26 .. 31;
    end record;
 
-   subtype Write_DHCSR_S_RESET_ST_Field is HAL.UInt16;
+   subtype Write_DHCSR_S_RESET_ST_Field is BT.UInt16;
 
    type Write_DHCSR_Register is record
       --  Write-only.
       C_DEBUGGEN    : Boolean := False;
       --  Write-only.
-      C_HALT        : Boolean := False;
+      C_BTT        : Boolean := False;
       --  Write-only.
       C_STEP        : Boolean := False;
       --  Write-only.
       C_MASKINTS    : Boolean := False;
       --  unspecified
-      Reserved_4_4  : HAL.Bit := 16#0#;
+      Reserved_4_4  : BT.Bit := 16#0#;
       --  Write-only.
       C_SNAPSTALL   : Boolean := False;
       --  unspecified
-      Reserved_6_15 : HAL.UInt10 := 16#0#;
+      Reserved_6_15 : BT.UInt10 := 16#0#;
       --  Write-only. Debug Key. The value 0xA05F must be written to enable
       --  write accesses to bits [15:0], otherwise the write access will be
       --  ignored. Read behavior of bits [31:16] is as listed below.
@@ -126,7 +128,7 @@ package Cortex_M_SVD.Debug is
 
    for Write_DHCSR_Register use record
       C_DEBUGGEN    at 0 range 0 .. 0;
-      C_HALT        at 0 range 1 .. 1;
+      C_BTT        at 0 range 1 .. 1;
       C_STEP        at 0 range 2 .. 2;
       C_MASKINTS    at 0 range 3 .. 3;
       Reserved_4_4  at 0 range 4 .. 4;
@@ -140,7 +142,7 @@ package Cortex_M_SVD.Debug is
       Mode_1,
       Mode_2);
 
-   --  Debug Halting Control and Status Register
+   --  Debug BTting Control and Status Register
    type DHCSR_Cluster
      (Discriminent : DHCSR_Disc := Mode_1)
    is record
@@ -158,7 +160,7 @@ package Cortex_M_SVD.Debug is
       Write at 0 range 0 .. 31;
    end record;
 
-   type DCRSR_HALTED_Field is
+   type DCRSR_BTTED_Field is
      (
       Register_0,
       Register_1,
@@ -181,7 +183,7 @@ package Cortex_M_SVD.Debug is
       Psp,
       Control_Faultmask_Basepri_Primask)
      with Size => 5;
-   for DCRSR_HALTED_Field use
+   for DCRSR_BTTED_Field use
      (Register_0 => 0,
       Register_1 => 1,
       Register_2 => 2,
@@ -219,19 +221,19 @@ package Cortex_M_SVD.Debug is
    --  register is only accessible from Debug state.
    type DCRSR_Register is record
       --  Write-only.
-      HALTED         : DCRSR_HALTED_Field := Cortex_M_SVD.Debug.Register_0;
+      BTTED         : DCRSR_BTTED_Field := Cortex_M_SVD.Debug.Register_0;
       --  unspecified
-      Reserved_5_15  : HAL.UInt11 := 16#0#;
+      Reserved_5_15  : BT.UInt11 := 16#0#;
       --  Write-only.
       REGWnR         : DCRSR_REGWnR_Field := Cortex_M_SVD.Debug.Read;
       --  unspecified
-      Reserved_17_31 : HAL.UInt15 := 16#0#;
+      Reserved_17_31 : BT.UInt15 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
 
    for DCRSR_Register use record
-      HALTED         at 0 range 0 .. 4;
+      BTTED         at 0 range 0 .. 4;
       Reserved_5_15  at 0 range 5 .. 15;
       REGWnR         at 0 range 16 .. 16;
       Reserved_17_31 at 0 range 17 .. 31;
@@ -241,7 +243,7 @@ package Cortex_M_SVD.Debug is
    type DEMCR_Register is record
       VC_CORERESET   : Boolean := False;
       --  unspecified
-      Reserved_1_3   : HAL.UInt3 := 16#0#;
+      Reserved_1_3   : BT.UInt3 := 16#0#;
       VC_MMERR       : Boolean := False;
       VC_NOCPERR     : Boolean := False;
       VC_CHKERR      : Boolean := False;
@@ -250,16 +252,16 @@ package Cortex_M_SVD.Debug is
       VC_INTERR      : Boolean := False;
       VC_HARDERR     : Boolean := False;
       --  unspecified
-      Reserved_11_15 : HAL.UInt5 := 16#0#;
+      Reserved_11_15 : BT.UInt5 := 16#0#;
       MON_EN         : Boolean := False;
       MON_PEND       : Boolean := False;
       MON_STEP       : Boolean := False;
       MON_REQ        : Boolean := False;
       --  unspecified
-      Reserved_20_23 : HAL.UInt4 := 16#0#;
+      Reserved_20_23 : BT.UInt4 := 16#0#;
       TRCENA         : Boolean := False;
       --  unspecified
-      Reserved_25_31 : HAL.UInt7 := 16#0#;
+      Reserved_25_31 : BT.UInt7 := 16#0#;
    end record
      with Volatile_Full_Access, Size => 32,
           Bit_Order => System.Low_Order_First;
@@ -291,7 +293,7 @@ package Cortex_M_SVD.Debug is
    type Debug_Peripheral is record
       --  Debug Fault Status Register
       DFSR  : aliased DFSR_Register;
-      --  Debug Halting Control and Status Register
+      --  Debug BTting Control and Status Register
       DHCSR : aliased DHCSR_Cluster;
       --  Debug Core Register Selector Register: The DCRSR write-only register
       --  generates a handshake to the core to transfer the selected register
@@ -300,7 +302,7 @@ package Cortex_M_SVD.Debug is
       --  This register is only accessible from Debug state.
       DCRSR : aliased DCRSR_Register;
       --  Debug Core Register Data Register
-      DCRDR : aliased HAL.UInt32;
+      DCRDR : aliased BT.UInt32;
       --  Debug Exception and Monitor Control Register
       DEMCR : aliased DEMCR_Register;
    end record

@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                        Copyright (C) 2019, AdaCore                       --
+--                    Copyright (C) 2015, AdaCore                           --
 --                                                                          --
 --  Redistribution and use in source and binary forms, with or without      --
 --  modification, are permitted provided that the following conditions are  --
@@ -18,7 +18,7 @@
 --   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS    --
 --   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT      --
 --   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  --
---   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SBTL THE COPYRIGHT   --
+--   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT   --
 --   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, --
 --   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT       --
 --   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,  --
@@ -29,66 +29,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Cortex_M_SVD.SysTick; use Cortex_M_SVD.SysTick;
+with System.Machine_Code;  use System.Machine_Code;
 
-package body Cortex_M.Systick is
+package body Memory_Barriers is
 
-   ---------------
-   -- Configure --
-   ---------------
+   ----------------------------------
+   -- Data_Synchronization_Barrier --
+   ----------------------------------
 
-   procedure Configure
-     (Source             : Clock_Source;
-      Generate_Interrupt : Boolean;
-      Reload_Value       : BT.UInt24)
-   is
+   procedure Data_Synchronization_Barrier is
+      pragma Suppress (All_Checks);
    begin
-      SysTick_Periph.CSR.CLKSOURCE :=
-        (case Source is
-            when CPU_Clock      => Cpu_Clk,
-            when External_Clock => External_Clk);
+      Asm ("DSB #0xF", Volatile => True);    -- 15 is 'Sy", ie "full system"
+   end Data_Synchronization_Barrier;
 
-      SysTick_Periph.CSR.TICKINT :=
-        (if Generate_Interrupt then Enable else Disable);
-
-      SysTick_Periph.RVR.RELOAD := Reload_Value;
-      SysTick_Periph.CVR.CURRENT := Counter;
-   end Configure;
-
-   ------------
-   -- Enable --
-   ------------
-
-   procedure Enable is
-   begin
-      SysTick_Periph.CSR.ENABLE := Enable;
-   end Enable;
-
-   -------------
-   -- Disable --
-   -------------
-
-   procedure Disable is
-   begin
-      SysTick_Periph.CSR.ENABLE := Disable;
-   end Disable;
-
-   ---------------------
-   -- Counted_To_Zero --
-   ---------------------
-
-   function Counted_To_Zero return Boolean is
-   begin
-      return SysTick_Periph.CSR.COUNTFLAG;
-   end Counted_To_Zero;
-
-   -------------
-   -- Counter --
-   -------------
-
-   function Counter return BT.UInt24 is
-   begin
-      return SysTick_Periph.CVR.CURRENT;
-   end Counter;
-
-end Cortex_M.Systick;
+end Memory_Barriers;

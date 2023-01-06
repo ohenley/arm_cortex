@@ -43,7 +43,7 @@
 --  STM32F4 (ARM Cortex M4F) microcontrollers from ST Microelectronics.
 
 with System;
-with HAL;            use HAL;
+with Beta_Types; use Beta_Types;
 
 package Cortex_M.NVIC is  -- the Nested Vectored Interrupt Controller
    pragma Elaborate_Body;

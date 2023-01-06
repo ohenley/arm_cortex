@@ -70,8 +70,9 @@ package body Cortex_M.DWT is
    -- DWT_Reset_Value --
    ---------------------
 
-   function DWT_Reset_Value return UInt32 is
+   function DWT_Reset_Value return BT.UInt32 is
       use Cortex_M_SVD.DWT;
+      use BT;
 
       function As_UInt32 is new Ada.Unchecked_Conversion
         (Source => CTRL_Register, Target => UInt32);
