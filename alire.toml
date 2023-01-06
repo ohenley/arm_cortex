@@ -1,0 +1,18 @@
+name = "arm_cortex"
+description = "Shiny new project"
+version = "1.0.0"
+licenses = "BSD-3-Clause"
+
+tags = ["embedded"]
+website = "https://github.com/wolfbiters/arm_cortex"
+
+authors = ["wolf biters"]
+maintainers = ["wolf biters <the.wolf.biters@gmail.com>"]
+maintainers-logins = ["wolfbiters"]
+
+[[depends-on]]
+basic_types = "1.0.0"
+gnat_arm_elf = ">=12"
+
+[configuration.variables]
+core = { type = "Enum", values = ["m0", "m0p", "m4", "m4f", "m7f", "m7df"] }

@@ -1,0 +1,13 @@
+name = "cortex_m4f"
+description = "cortex_m4f support"
+version = "1.0.0"
+website = "https://github.com/wolfbiters/cortex_m"
+licenses = "Apache-2.0"
+tags = ["embedded", "baremetal"]
+
+authors = ["wolfbiters"]
+maintainers = ["wolfbiters <the.wolf.biters@gmail.com>"]
+maintainers-logins = ["wolfbiters"]
+
+[[depends-on]]
+cortex_m = "~1.0.0"
