@@ -2,11 +2,7 @@ with "config/arm_cortex_config.gpr";
 project Arm_Cortex is
 
    for Target use "arm-eabi";
-
-   case Arm_Cortex_Config.Runtime is
-      when "light_cortex" =>
-         for Runtime ("Ada") use "light-cortex" & "-" & Arm_Cortex_Config.Core;
-   end case;
+   for Runtime ("Ada") use "light-cortex" & "-" & Arm_Cortex_Config.Core;
 
    for Library_Name use "Arm_Cortex";
    for Library_Version use Project'Library_Name & ".so." & Arm_Cortex_Config.Crate_Version;

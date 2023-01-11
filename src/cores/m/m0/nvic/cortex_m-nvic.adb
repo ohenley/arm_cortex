@@ -51,7 +51,6 @@ package body Cortex_M.NVIC is
      (IRQn     : Interrupt_ID;
       Priority : Interrupt_Priority)
    is
-      use BT;
       type As_Array (As_Arr : Boolean := True) is record
          case As_Arr is
             when True =>
@@ -98,7 +97,6 @@ package body Cortex_M.NVIC is
    -------------
 
    function Enabled (IRQn : Interrupt_ID) return Boolean is
-      use BT;
    begin
       return ((NVIC_Periph.NVIC_ISER and
               BT.Shift_Left (1, Natural (IRQn))) /= 0);
@@ -109,7 +107,6 @@ package body Cortex_M.NVIC is
    -------------
 
    function Pending (IRQn : Interrupt_ID) return Boolean is
-      use BT;
    begin
       return ((NVIC_Periph.NVIC_ISPR and
               BT.Shift_Left (1, Natural (IRQn))) /= 0);
