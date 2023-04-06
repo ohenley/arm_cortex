@@ -1,4 +1,5 @@
 with "config/arm_cortex_config.gpr";
+
 project Arm_Cortex is
 
    for Target use "arm-eabi";
