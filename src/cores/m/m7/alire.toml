@@ -1,13 +1,13 @@
 name = "cortex_m7"
 description = "cortex_m7 support"
 version = "1.0.0"
-website = "https://github.com/wolfbiters/cortex_m"
+website = "https://github.com/ohenley/cortex_m"
 licenses = "Apache-2.0"
 tags = ["embedded", "baremetal"]
 
-authors = ["wolfbiters"]
-maintainers = ["wolfbiters <the.wolf.biters@gmail.com>"]
-maintainers-logins = ["wolfbiters"]
+authors = ["ohenley"]
+maintainers = ["ohenley <olivier.henley@gmail.com>"]
+maintainers-logins = ["ohenley"]
 
 [[depends-on]]
 cortex_m = "~1.0.0"
